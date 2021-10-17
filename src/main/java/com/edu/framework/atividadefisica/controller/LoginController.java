@@ -30,6 +30,13 @@ public class LoginController {
         return "login";
     }
 
+    @GetMapping("/exit")
+    private String sair(HttpServletResponse response) {
+        Cookie cookie = new Cookie("sessionToken", "-1");
+        response.addCookie(cookie);
+        return "redirect:/login";
+    }
+
     @PostMapping("/login")
     private String efetuarLogin(@ModelAttribute("usuario") Usuario usuario, Model model, HttpServletResponse response) {
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findUsuarioByEmailAndSenha(usuario.getEmail(), usuario.getSenha());

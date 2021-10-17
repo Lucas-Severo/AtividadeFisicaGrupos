@@ -23,28 +23,43 @@ public class SessionFilter extends HttpFilter {
         "cadastrar"
     };
 
+    private String[] AUTH_ROUTES = new String[]{
+        "login",
+        "cadastrar"
+    };
+
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
         Integer sessionToken = null;
 
-        if (!isPublicRoute(request.getRequestURI().toString())) {
-            if (Objects.nonNull(request.getCookies())) {
-                for (Cookie cookie : request.getCookies()) {
-                    if (cookie.getName().equals("sessionToken")) {
-                        sessionToken = Integer.parseInt(cookie.getValue());
-                        break;
-                    }
+        
+        if (Objects.nonNull(request.getCookies())) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("sessionToken")) {
+                    sessionToken = Integer.parseInt(cookie.getValue());
+                    break;
                 }
-            }
-
-            if (!AuthenticationHelper.isTokenValidate(sessionToken)) {
-                response.sendRedirect("login");
             }
         }
 
+        if (isAuthRoute(request.getRequestURI().toString()) && AuthenticationHelper.isTokenValidate(sessionToken)) {
+            response.sendRedirect("/");
+        } else if (!AuthenticationHelper.isTokenValidate(sessionToken) && !isPublicRoute(request.getRequestURI().toString())) {
+            response.sendRedirect("login");
+        }
+
         chain.doFilter(request, response);
+    }
+
+    private boolean isAuthRoute(String path) {
+        for (String url: AUTH_ROUTES) {
+            if (path.contains(url)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isPublicRoute(String path) {

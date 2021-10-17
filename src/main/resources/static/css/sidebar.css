@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+
+.sidebar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  height: 100vh;
+  left: 0;
+  overflow-y: auto;
+  background: #37474F;
+}
+
+.sidebar header {
+  background-color: #263238;
+  font-size: 20px;
+  line-height: 56px;
+  text-align: center;
+}
+
+.sidebar header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar header a:hover {
+  color: #fff;
+}
+
+.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.menu .item {
+  border-bottom: 1px solid #455A64;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.menu .item:hover {
+  background-color: #263238;
+}
+
+.sidebar .menu a {
+  color: #CFD8DC;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.nav_footer {
+  width: 100%;
+  height: 50px;
+  background-color: #3c4549;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.exit__button {
+  color: white;
+}
+
+.exit__button:hover {
+  color: rgb(151, 137, 137);
+}
