@@ -34,7 +34,6 @@ public class SessionFilter extends HttpFilter {
 
         Integer sessionToken = null;
 
-        
         if (Objects.nonNull(request.getCookies())) {
             for (Cookie cookie : request.getCookies()) {
                 if (cookie.getName().equals("sessionToken")) {
@@ -47,7 +46,7 @@ public class SessionFilter extends HttpFilter {
         if (isAuthRoute(request.getRequestURI().toString()) && AuthenticationHelper.isTokenValidate(sessionToken)) {
             response.sendRedirect("/");
         } else if (!AuthenticationHelper.isTokenValidate(sessionToken) && !isPublicRoute(request.getRequestURI().toString())) {
-            response.sendRedirect("login");
+            response.sendRedirect("/login");
         }
 
         chain.doFilter(request, response);

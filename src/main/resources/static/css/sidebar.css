@@ -36,8 +36,11 @@
 
 .menu .item {
   border-bottom: 1px solid #455A64;
-  padding: 5px 10px;
   cursor: pointer;
+}
+
+.menu .item.selected {
+  background-color: #1b2124;
 }
 
 .menu .item:hover {
@@ -59,10 +62,8 @@
   align-items: center;
 }
 
-.exit__button {
-  color: white;
-}
-
-.exit__button:hover {
-  color: rgb(151, 137, 137);
+.link {
+  width: 100%;
+  display: block;
+  padding: 15px 10px;
 }

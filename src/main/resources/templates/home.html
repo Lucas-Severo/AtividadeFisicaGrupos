@@ -11,16 +11,16 @@
 <body>
     <div class="sidebar">
         <header>
-            <a href="#">Atividade Física</a>
+            <a th:href="@{/}">Atividade Física</a>
         </header>
         <ul class="menu">
             <li class="item text-uppercase">
-                <a href="#">
+                <a class="link" href="#">
                     <i class="zmdi zmdi-view-dashboard"></i>Atividades
                 </a>
             </li>
             <li class="item text-uppercase">
-                <a href="#">
+                <a class="link" th:href="@{modalidade}">
                     <i class="zmdi zmdi-link"></i>Modalidades
                 </a>
             </li>
@@ -28,7 +28,7 @@
         <footer class="nav_footer">
             <a 
                 th:href="@{exit}"
-                class="btn exit__button" 
+                class="btn col-12 btn-danger btn-lg" 
                 href="#">Sair</a>
         </footer>
     </div>
