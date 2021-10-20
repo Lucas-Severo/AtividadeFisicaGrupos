@@ -57,8 +57,7 @@
                                 <input autocomplete="off" type="text" class="form-control localidade" list="listaLocalidades" required>
                                 <datalist id="listaLocalidades">
                                     <select th:field="*{localidade}">
-                                        <option value="1">Nova Andradina</option>
-                                        <option value="2">Ivinhema</option>
+                                        <option th:each="localidade : ${localidades}" th:value="${localidade.id}" th:text="${localidade.cidade}"></option>
                                     </select>
                                 </datalist>
                             </div>
@@ -74,7 +73,7 @@
                             <div class="col">
                                 <label>Modalidade</label>
                                 <select th:field="*{modalidade.id}" class="form-select" required>
-                                    <option value="1">Corrida</option>
+                                    <option th:each="modalidade : ${modalidades}" th:value="${modalidade.id}" th:text="${modalidade.nome}"></option>
                                 </select>
                             </div>
                             <div class="col">
