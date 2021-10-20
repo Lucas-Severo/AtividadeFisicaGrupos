@@ -32,7 +32,10 @@ public class AtividadeController {
     private ModalidadeRepository modalidadeRepository;
 
     @GetMapping("/atividade")
-    public String exibirListaModalidades() {
+    public String exibirListaModalidades(Model model) {
+        List<Atividade> atividades = atividadeRepository.findAll();
+        model.addAttribute("atividades", atividades);
+
         return "atividade";
     }
 

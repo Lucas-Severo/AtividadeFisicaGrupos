@@ -22,11 +22,15 @@ public class Localidade {
     @Column(name = "lo_cidade")
     private String cidade;
 
+    @Column(name = "lo_estado_sigla")
+    private String estadoSigla;
+
     public Localidade() {}
 
-    public Localidade(String estado, String cidade) {
+    public Localidade(String estado, String cidade, String estadoSigla) {
         this.estado = estado;
         this.cidade = cidade;
+        this.estadoSigla = estadoSigla;
     }
 
     public Long getId() {
@@ -51,6 +55,14 @@ public class Localidade {
 
     public void setCidade(String cidade) {
         this.cidade = cidade;
+    }
+
+    public String getSigla() {
+        return this.estadoSigla;
+    }
+
+    public void setSigla(String estadoSigla) {
+        this.estadoSigla = estadoSigla;
     }
 
 }

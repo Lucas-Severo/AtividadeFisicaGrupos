@@ -35,8 +35,8 @@ public class DataLoader implements CommandLineRunner {
 		}
 
         if(localidadeRepository.count() == 0) {
-            Localidade novaAndradina = new Localidade("Mato Grosso do Sul", "Nova Andradina");
-            Localidade ivinhema = new Localidade("Mato Grosso do Sul", "Ivinhema");
+            Localidade novaAndradina = new Localidade("Mato Grosso do Sul", "Nova Andradina", "MS");
+            Localidade ivinhema = new Localidade("Mato Grosso do Sul", "Ivinhema", "MS");
             localidadeRepository.save(novaAndradina);
             localidadeRepository.save(ivinhema);
         }
