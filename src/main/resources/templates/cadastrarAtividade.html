@@ -54,9 +54,9 @@
                             </div>
                             <div class="col">
                                 <label>Localidade</label>
-                                <input autocomplete="off" type="text" class="form-control localidade" list="listaLocalidades" required>
+                                <input autocomplete="off" type="text" class="form-control localidadeAutocomplete" list="listaLocalidades" required>
                                 <datalist id="listaLocalidades">
-                                    <select th:field="*{localidade}">
+                                    <select class="localidade" th:field="*{localidade}">
                                         <option th:each="localidade : ${localidades}" th:value="${localidade.id}" th:text="${localidade.cidade}"></option>
                                     </select>
                                 </datalist>
