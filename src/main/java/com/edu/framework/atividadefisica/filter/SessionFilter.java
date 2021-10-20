@@ -1,6 +1,7 @@
 package com.edu.framework.atividadefisica.filter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import javax.servlet.FilterChain;
@@ -19,6 +20,7 @@ public class SessionFilter extends HttpFilter {
 
     private String[] PUBLIC_URLS = new String[]{
         "img",
+        "css",
         "login",
         "cadastrar"
     };
@@ -43,31 +45,43 @@ public class SessionFilter extends HttpFilter {
             }
         }
 
+
         if (isAuthRoute(request.getRequestURI().toString()) && AuthenticationHelper.isTokenValidate(sessionToken)) {
             response.sendRedirect("/");
-        } else if (!AuthenticationHelper.isTokenValidate(sessionToken) && !isPublicRoute(request.getRequestURI().toString())) {
+        } else if (!AuthenticationHelper.isTokenValidate(sessionToken) && !isPublicRoute(request.getRequestURI().toString())) {            
             response.sendRedirect("/login");
         }
 
         chain.doFilter(request, response);
     }
 
-    private boolean isAuthRoute(String path) {
-        for (String url: AUTH_ROUTES) {
-            if (path.contains(url)) {
+    private boolean isAuthRoute(String url) {
+        String pathUrl = convertUrlToPath(url);
+        for (String path: AUTH_ROUTES) {
+            if (path.equals(pathUrl)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isPublicRoute(String path) {
-        for (String url: PUBLIC_URLS) {
-            if (path.contains(url)) {
+    private boolean isPublicRoute(String url) {
+        String pathUrl = convertUrlToPath(url);
+        for (String path: PUBLIC_URLS) {
+            if (path.equals(pathUrl)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private String convertUrlToPath(String url) {
+        String[] urlSplit = url.split("/");
+        if(urlSplit.length > 1) {
+            return urlSplit[1];
+        } else {
+            return "/";
+        }
     }
 
 }

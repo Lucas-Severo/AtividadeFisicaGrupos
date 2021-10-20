@@ -14,3 +14,11 @@
     background-color: #325668;
     border-radius: 50%;
 }
+
+.cadastro {
+    max-width: 600px;
+}
+
+.botaoCadastro {
+    width: 100px;
+}
