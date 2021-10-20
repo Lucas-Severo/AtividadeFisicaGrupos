@@ -1,5 +1,7 @@
 package com.edu.framework.atividadefisica.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "tb_atividade")
@@ -38,6 +42,10 @@ public class Atividade {
     @ManyToOne
     @JoinColumn(name = "mo_id")
     private Modalidade modalidade;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @Column(name = "at_dthr_inicio")
+    private LocalDateTime data;
 
     public Long getId() {
         return this.id;
@@ -93,6 +101,14 @@ public class Atividade {
 
     public void setModalidade(Modalidade modalidade) {
         this.modalidade = modalidade;
+    }
+
+    public LocalDateTime getData() {
+        return this.data;
+    }
+
+    public void setData(LocalDateTime data) {
+        this.data = data;
     }
 
 }

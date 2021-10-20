@@ -15,8 +15,12 @@
     border-radius: 50%;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .cadastro {
-    max-width: 600px;
+    max-width: 800px;
 }
 
 .botaoCadastro {

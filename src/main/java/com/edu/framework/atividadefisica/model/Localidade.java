@@ -22,6 +22,13 @@ public class Localidade {
     @Column(name = "lo_cidade")
     private String cidade;
 
+    public Localidade() {}
+
+    public Localidade(String estado, String cidade) {
+        this.estado = estado;
+        this.cidade = cidade;
+    }
+
     public Long getId() {
         return this.id;
     }

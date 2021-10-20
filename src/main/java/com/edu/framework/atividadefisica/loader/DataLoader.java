@@ -1,6 +1,8 @@
 package com.edu.framework.atividadefisica.loader;
 
+import com.edu.framework.atividadefisica.dto.LocalidadeRepository;
 import com.edu.framework.atividadefisica.dto.ModalidadeRepository;
+import com.edu.framework.atividadefisica.model.Localidade;
 import com.edu.framework.atividadefisica.model.Modalidade;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private ModalidadeRepository modalidadeRepository;
+
+    @Autowired
+    private LocalidadeRepository localidadeRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -28,6 +33,15 @@ public class DataLoader implements CommandLineRunner {
             modalidadeRepository.save(ciclismo);
             modalidadeRepository.save(natacao);
 		}
+
+        if(localidadeRepository.count() == 0) {
+            Localidade novaAndradina = new Localidade("Mato Grosso do Sul", "Nova Andradina");
+            Localidade ivinhema = new Localidade("Mato Grosso do Sul", "Ivinhema");
+            localidadeRepository.save(novaAndradina);
+            localidadeRepository.save(ivinhema);
+        }
+
+
 	}
 
     
