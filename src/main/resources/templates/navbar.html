@@ -14,11 +14,12 @@
         <nav class="navbar navbar-dark bg-dark">
             <div class="container-fluid">
               <a class="navbar-brand text-uppercase" th:text="${pageTitle}"></a>
-              <div class="d-flex">
+              <div class="d-flex align-items-center">
                 <img 
                     th:src="@{/img/face.png}"
                     class="img-fluid profile-img" 
                     alt="Profile Image">
+                <span class="text-white p-2" th:text="${userLoggedEmail}"></span>
               </div>
             </div>
         </nav>

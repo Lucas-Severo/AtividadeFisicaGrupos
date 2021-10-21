@@ -2,12 +2,15 @@ package com.edu.framework.atividadefisica.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.edu.framework.atividadefisica.dto.AtividadeRepository;
 import com.edu.framework.atividadefisica.dto.LocalidadeRepository;
 import com.edu.framework.atividadefisica.dto.ModalidadeRepository;
 import com.edu.framework.atividadefisica.model.Atividade;
 import com.edu.framework.atividadefisica.model.Localidade;
 import com.edu.framework.atividadefisica.model.Modalidade;
+import com.edu.framework.atividadefisica.utils.UserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,20 +35,22 @@ public class AtividadeController {
     private ModalidadeRepository modalidadeRepository;
 
     @GetMapping("/atividade")
-    public String exibirListaModalidades(Model model) {
+    public String exibirListaModalidades(Model model, HttpServletRequest request) {
         List<Atividade> atividades = atividadeRepository.findAll();
         model.addAttribute("atividades", atividades);
         model.addAttribute("selectedOption", "atividade");
         model.addAttribute("pageTitle", "Atividades");
+        model.addAttribute("userLoggedEmail", UserDetails.getUserLogged(request).getEmail());
 
         return "atividade";
     }
 
     @GetMapping("/cadastrarAtividade")
-    public String exibirTelaCadastroAtividade(Model model) {
+    public String exibirTelaCadastroAtividade(Model model, HttpServletRequest request) {
         model.addAttribute("atividade", new Atividade());
         model.addAttribute("selectedOption", "atividade");
         model.addAttribute("pageTitle", "Cadastrar Atividade");
+        model.addAttribute("userLoggedEmail", UserDetails.getUserLogged(request).getEmail());
 
         List<Localidade> localidades = localidadeRepository.findAll();
         List<Modalidade> modalidades = modalidadeRepository.findAll();
@@ -57,7 +62,8 @@ public class AtividadeController {
     }
 
     @PostMapping("/cadastrarAtividade")
-    public String cadastrarAtividade(@ModelAttribute Atividade atividade) {
+    public String cadastrarAtividade(@ModelAttribute Atividade atividade, HttpServletRequest request) {
+        atividade.setCriador(UserDetails.getUserLogged(request));
         atividadeRepository.save(atividade);
         return "redirect:/atividade";
     }
