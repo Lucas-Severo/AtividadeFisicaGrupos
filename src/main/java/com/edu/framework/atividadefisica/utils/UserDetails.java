@@ -3,6 +3,7 @@ package com.edu.framework.atividadefisica.utils;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -21,16 +22,18 @@ public class UserDetails {
     }
 
     public static Usuario getUserLogged(HttpServletRequest httpRequest) {
-        for(Cookie cookie: httpRequest.getCookies()) {
-            if (cookie.getName().equals("userAuth")) {
-                String value = cookie.getValue();
-                String valueDecoded = URLDecoder.decode(value, StandardCharsets.UTF_8);
-                Usuario usuario = new Gson().fromJson(valueDecoded, Usuario.class);
+        if (Objects.nonNull(httpRequest.getCookies())) {
+            for(Cookie cookie: httpRequest.getCookies()) {
+                if (cookie.getName().equals("userAuth")) {
+                    String value = cookie.getValue();
+                    String valueDecoded = URLDecoder.decode(value, StandardCharsets.UTF_8);
+                    Usuario usuario = new Gson().fromJson(valueDecoded, Usuario.class);
 
-                return usuario;
+                    return usuario;
+                }
             }
         }
-        throw new RuntimeException("Usuário inválido");
+        return null;
     }
 
 }

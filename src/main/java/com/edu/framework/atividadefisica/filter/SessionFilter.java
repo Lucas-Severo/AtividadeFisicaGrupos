@@ -10,7 +10,9 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.edu.framework.atividadefisica.model.Usuario;
 import com.edu.framework.atividadefisica.utils.AuthenticationHelper;
+import com.edu.framework.atividadefisica.utils.UserDetails;
 
 import org.springframework.stereotype.Component;
 
@@ -49,6 +51,11 @@ public class SessionFilter extends HttpFilter {
             response.sendRedirect("/");
         } else if (!AuthenticationHelper.isTokenValidate(sessionToken) && !isPublicRoute(request.getRequestURI().toString())) {            
             response.sendRedirect("/login");
+        }
+
+        Usuario usuario = UserDetails.getUserLogged(request);
+        if (Objects.nonNull(usuario)) {
+            request.setAttribute("userLoggedEmail", usuario.getEmail());
         }
 
         chain.doFilter(request, response);

@@ -35,22 +35,20 @@ public class AtividadeController {
     private ModalidadeRepository modalidadeRepository;
 
     @GetMapping("/atividade")
-    public String exibirListaModalidades(Model model, HttpServletRequest request) {
+    public String exibirListaModalidades(Model model) {
         List<Atividade> atividades = atividadeRepository.findAll();
         model.addAttribute("atividades", atividades);
         model.addAttribute("selectedOption", "atividade");
         model.addAttribute("pageTitle", "Atividades");
-        model.addAttribute("userLoggedEmail", UserDetails.getUserLogged(request).getEmail());
 
         return "atividade";
     }
 
     @GetMapping("/cadastrarAtividade")
-    public String exibirTelaCadastroAtividade(Model model, HttpServletRequest request) {
+    public String exibirTelaCadastroAtividade(Model model) {
         model.addAttribute("atividade", new Atividade());
         model.addAttribute("selectedOption", "atividade");
         model.addAttribute("pageTitle", "Cadastrar Atividade");
-        model.addAttribute("userLoggedEmail", UserDetails.getUserLogged(request).getEmail());
 
         List<Localidade> localidades = localidadeRepository.findAll();
         List<Modalidade> modalidades = modalidadeRepository.findAll();
