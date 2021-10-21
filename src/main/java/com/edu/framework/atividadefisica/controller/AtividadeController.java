@@ -1,6 +1,7 @@
 package com.edu.framework.atividadefisica.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +11,7 @@ import com.edu.framework.atividadefisica.dto.ModalidadeRepository;
 import com.edu.framework.atividadefisica.model.Atividade;
 import com.edu.framework.atividadefisica.model.Localidade;
 import com.edu.framework.atividadefisica.model.Modalidade;
+import com.edu.framework.atividadefisica.model.Usuario;
 import com.edu.framework.atividadefisica.utils.UserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -64,6 +67,30 @@ public class AtividadeController {
         atividade.setCriador(UserDetails.getUserLogged(request));
         atividadeRepository.save(atividade);
         return "redirect:/atividade";
+    }
+
+    @GetMapping("/visualizarAtividade/{id}")
+    public String visualizarAtividade(Model model, @PathVariable Long id, HttpServletRequest request) {
+        Atividade atividade = null;
+
+        Optional<Atividade> atividadeInformada = atividadeRepository.findById(id);
+        if(atividadeInformada.isPresent()) {
+            atividade = atividadeInformada.get();
+            Usuario usuarioLogado = UserDetails.getUserLogged(request);
+            boolean usuarioCriador = retornaSeUsuarioCriadoDaAtividade(atividade.getCriador(), usuarioLogado);
+    
+            model.addAttribute("usuarioCriador", usuarioCriador);
+        }
+
+        model.addAttribute("atividade", atividade);
+        model.addAttribute("selectedOption", "atividade");
+        model.addAttribute("pageTitle", "Visualizar Atividade");
+
+        return "visualizarAtividade";
+    }
+
+    public boolean retornaSeUsuarioCriadoDaAtividade(Usuario usuarioCriadorAtividade, Usuario usuarioLogado) {
+        return usuarioCriadorAtividade.getId().equals(usuarioLogado.getId());
     }
 
 }

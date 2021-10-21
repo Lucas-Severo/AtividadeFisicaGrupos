@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Cadastro</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+
+    <body>
+        <div th:include="base"></div>
+        <div class="viewport">
+            <div th:if="${atividade} != null" th:object="${atividade}" class="content container-fluid">
+                <div class="pt-3 ps-2 row visualizar">
+                    <div class="col d-flex flex-column">
+                        <label class="bold">Nome do grupo</label>
+                        <label th:text="*{nome}"></label>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <label class="bold">Localidade</label>
+                        <label th:text="*{localidade.cidade} + '/' + *{localidade.sigla}"></label>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <label class="bold">Ritmo</label>
+                        <label th:text="*{#numbers.formatDecimal(ritmo, 0, 'COMMA', 2, 'POINT')} + ' km/h'"></label>
+                    </div>
+                </div>
+                <div class="pt-4 ps-2 row visualizar">
+                    <div class="col d-flex flex-column">
+                        <label class="bold">Modalidade</label>
+                        <label th:text="*{modalidade.nome}"></label>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <label class="bold">Data</label>
+                        <label th:text="*{#temporals.format(data, 'dd/MM/yyyy HH:mm')}"></label>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <label class="bold">Distância</label>
+                        <label th:text="*{#numbers.formatDecimal(distancia, 0, 'COMMA', 2, 'POINT')} + ' km'"></label>
+                    </div>
+                </div>
+                <div th:if="${usuarioCriador} == false" class="pt-4 ps-2 visualizar">
+                    <button class="btn btn-success me-2">Participar <i class="fas fa-user"></i></button>
+                    <button class="btn btn-success">Ver grupo <i class="fas fa-eye"></i></button>
+                </div>
+                <div th:if="${usuarioCriador} == true" class="pt-4 ps-2 visualizar">
+                    <button class="btn btn-success me-2">Editar <i class="fas fa-pencil-alt"></i></button>
+                    <button class="btn btn-success me-2">Remover <i class="fas fa-trash"></i></button>
+                    <button class="btn btn-success">Ver grupo <i class="fas fa-eye"></i></button>
+                </div>
+            </div>
+            <div th:if="${atividade} == null" class="d-flex flex-column justify-content-center align-items-center paginaNaoEncontrada">
+                <i class="fas fa-unlink iconePaginaNaoEncontrada"></i>
+                <label>Atividade não encontrada</label>
+            </div>
+        </div>
+    </body>
+</html>

@@ -33,7 +33,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr th:each="atividade : ${atividades}">
+                      <tr role="button" th:onclick="'javascript:redirecionar('+${atividade.id}+')'" th:each="atividade : ${atividades}">
                           <td class="text-truncate" style="max-width: 120px;" th:text="${atividade.nome}"></td>
                           <td th:text="${atividade.localidade.cidade} + '/' + ${atividade.localidade.sigla}"></td>
                           <td th:text="${atividade.modalidade.nome}"></td>
@@ -45,5 +45,6 @@
                   </table>
             </div>
         </div>
+        <script th:src="@{/js/redirecionarAtividade.js}"></script>
     </body>
 </html>

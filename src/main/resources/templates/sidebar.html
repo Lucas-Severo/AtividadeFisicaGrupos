@@ -15,19 +15,19 @@
         </header>
         <ul class="menu">
             <li class="item text-uppercase" th:classappend="${selectedOption == 'atividade'}? 'selected': ''">
-                <a class="link" th:href="@{atividade}">
+                <a class="link" th:href="@{/atividade}">
                     <i class="zmdi zmdi-view-dashboard"></i>Atividades
                 </a>
             </li>
             <li class="item text-uppercase" th:classappend="${selectedOption == 'modalidade'}? 'selected': ''">
-                <a class="link" th:href="@{modalidade}">
+                <a class="link" th:href="@{/modalidade}">
                     <i class="zmdi zmdi-link"></i>Modalidades
                 </a>
             </li>
         </ul>
         <footer class="nav_footer">
             <a 
-                th:href="@{exit}"
+                th:href="@{/exit}"
                 class="btn col-12 btn-danger btn-lg" 
                 href="#">Sair</a>
         </footer>

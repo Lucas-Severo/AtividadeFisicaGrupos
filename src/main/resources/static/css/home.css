@@ -26,3 +26,15 @@
 .botaoCadastro {
     width: 100px;
 }
+
+.visualizar {
+    max-width: 800px;
+}
+
+.paginaNaoEncontrada {
+    height: calc(100vh - 100px);
+}
+
+.iconePaginaNaoEncontrada {
+    font-size: 3rem;
+}
