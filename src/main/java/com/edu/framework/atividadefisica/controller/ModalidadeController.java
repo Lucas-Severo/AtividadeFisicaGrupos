@@ -23,6 +23,8 @@ public class ModalidadeController {
         List<Modalidade> modalidades = modalidadeRepository.findAll();
 
         model.addAttribute("modalidades", modalidades);
+        model.addAttribute("selectedOption", "modalidade");
+        model.addAttribute("pageTitle", "Modalidades");
 
         return "modalidade";
     }

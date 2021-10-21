@@ -35,6 +35,8 @@ public class AtividadeController {
     public String exibirListaModalidades(Model model) {
         List<Atividade> atividades = atividadeRepository.findAll();
         model.addAttribute("atividades", atividades);
+        model.addAttribute("selectedOption", "atividade");
+        model.addAttribute("pageTitle", "Atividades");
 
         return "atividade";
     }
@@ -42,6 +44,8 @@ public class AtividadeController {
     @GetMapping("/cadastrarAtividade")
     public String exibirTelaCadastroAtividade(Model model) {
         model.addAttribute("atividade", new Atividade());
+        model.addAttribute("selectedOption", "atividade");
+        model.addAttribute("pageTitle", "Cadastrar Atividade");
 
         List<Localidade> localidades = localidadeRepository.findAll();
         List<Modalidade> modalidades = modalidadeRepository.findAll();

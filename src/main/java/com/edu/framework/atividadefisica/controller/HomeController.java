@@ -16,6 +16,7 @@ public class HomeController {
     @GetMapping("/")
     public String exibirHome(Model model, HttpServletRequest request) {
         model.addAttribute("usuario", new Usuario());
+        model.addAttribute("pageTitle", "Home");
 
         return "home";
     }
