@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.edu.framework.atividadefisica.dto.UsuarioRepository;
 import com.edu.framework.atividadefisica.model.Usuario;
 import com.edu.framework.atividadefisica.utils.AuthenticationHelper;
+import com.edu.framework.atividadefisica.utils.UserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,9 +42,14 @@ public class LoginController {
     private String efetuarLogin(@ModelAttribute("usuario") Usuario usuario, Model model, HttpServletResponse response) {
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findUsuarioByEmailAndSenha(usuario.getEmail(), usuario.getSenha());
         if (usuarioEncontrado.isPresent()) {
+            Usuario usuarioLogado = usuarioEncontrado.get();
+            usuarioLogado.setSenha(null);
+
             Integer generatedToken = AuthenticationHelper.generate();
-            Cookie cookie = new Cookie("sessionToken", Integer.toString(generatedToken));
-            response.addCookie(cookie);
+            Cookie sessionToken = new Cookie("sessionToken", Integer.toString(generatedToken));
+            
+            UserDetails.setUserLogged(response, usuarioLogado);
+            response.addCookie(sessionToken);
         } else {
             model.addAttribute("erroMessage", "Usuário ou Senha inválidos");
             return "login";
