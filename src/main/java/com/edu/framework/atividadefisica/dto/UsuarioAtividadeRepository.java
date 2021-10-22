@@ -1,7 +1,5 @@
 package com.edu.framework.atividadefisica.dto;
 
-import java.util.List;
-
 import com.edu.framework.atividadefisica.model.UsuarioAtividade;
 import com.edu.framework.atividadefisica.model.UsuarioAtividadePK;
 
