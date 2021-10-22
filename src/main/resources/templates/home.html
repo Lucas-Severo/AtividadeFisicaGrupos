@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <title>Home</title>
-</head>
+    <head th:replace="headfile.html :: head(Home)">
+    </head>
 
-<body>
-    <div th:include="base"></div>
-    
-    <div class="viewport">
-        <div class="container-fluid d-flex flex-column justify-content-center align-items-center">
-            <p class="fs-2 text">Procure Grupos Para Atividades Físicas</p>
-            <img th:src="@{img/group_running.png}" height="500"/>
+    <body>
+        <div th:replace="base"></div>
+        <div class="viewport">
+            <div class="container-fluid d-flex flex-column justify-content-center align-items-center">
+                <p class="fs-2 text">Procure Grupos Para Atividades Físicas</p>
+                <img th:src="@{img/group_running.png}" height="500"/>
+            </div>
         </div>
-    </div>
-</body>
+    </body>
 
 </html>

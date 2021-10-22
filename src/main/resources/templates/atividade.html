@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Atividades</title>
+    <head th:replace="headfile.html :: head(Atividade)">
     </head>
-
     <body>
-        <div th:include="base"></div>
+        <div th:replace="base"></div>
 
         <div class="viewport">
             <div class="content container-fluid">

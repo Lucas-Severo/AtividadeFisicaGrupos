@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Cadastro</title>
+    <head th:replace="headfile.html :: head('Cadastrar Atividade')">
     </head>
 
     <body>
-        <div th:include="base"></div>
+        <div th:replace="base"></div>
+        
         <div class="viewport">
             <div class="content container-fluid">
                 <div class="pt-2 ps-2">
