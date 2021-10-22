@@ -1,5 +1,6 @@
 package com.edu.framework.atividadefisica.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,10 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import com.edu.framework.atividadefisica.dto.AtividadeRepository;
 import com.edu.framework.atividadefisica.dto.LocalidadeRepository;
 import com.edu.framework.atividadefisica.dto.ModalidadeRepository;
+import com.edu.framework.atividadefisica.dto.UsuarioAtividadeRepository;
 import com.edu.framework.atividadefisica.model.Atividade;
 import com.edu.framework.atividadefisica.model.Localidade;
 import com.edu.framework.atividadefisica.model.Modalidade;
 import com.edu.framework.atividadefisica.model.Usuario;
+import com.edu.framework.atividadefisica.model.UsuarioAtividade;
+import com.edu.framework.atividadefisica.model.UsuarioAtividadePK;
 import com.edu.framework.atividadefisica.utils.UserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +26,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 
 @Controller
 @RequestMapping
@@ -36,6 +39,9 @@ public class AtividadeController {
 
     @Autowired
     private ModalidadeRepository modalidadeRepository;
+
+    @Autowired
+    private UsuarioAtividadeRepository usuarioAtividadeRepository;
 
     @GetMapping("/atividade")
     public String exibirListaModalidades(Model model) {
@@ -64,8 +70,19 @@ public class AtividadeController {
 
     @PostMapping("/cadastrarAtividade")
     public String cadastrarAtividade(@ModelAttribute Atividade atividade, HttpServletRequest request) {
-        atividade.setCriador(UserDetails.getUserLogged(request));
-        atividadeRepository.save(atividade);
+        Usuario usuario = UserDetails.getUserLogged(request);
+        atividade.setCriador(usuario);
+        Atividade atividadeSalva = atividadeRepository.save(atividade);
+
+        UsuarioAtividadePK usuarioAtividadePK = new UsuarioAtividadePK();
+        usuarioAtividadePK.setAtividade(atividadeSalva);
+        usuarioAtividadePK.setUsuario(usuario);
+
+        UsuarioAtividade usuarioAtividade = new UsuarioAtividade();
+        usuarioAtividade.setUsuarioAtividadePK(usuarioAtividadePK);
+        usuarioAtividade.setDataRegistro(LocalDateTime.now());
+        usuarioAtividadeRepository.save(usuarioAtividade);
+
         return "redirect:/atividade";
     }
 
@@ -78,7 +95,14 @@ public class AtividadeController {
             atividade = atividadeInformada.get();
             Usuario usuarioLogado = UserDetails.getUserLogged(request);
             boolean usuarioCriador = retornaSeUsuarioCriadoDaAtividade(atividade.getCriador(), usuarioLogado);
-    
+
+            UsuarioAtividadePK usuarioAtividadePK = new UsuarioAtividadePK();
+            usuarioAtividadePK.setAtividade(atividade);
+            usuarioAtividadePK.setUsuario(usuarioLogado);
+
+            Optional<UsuarioAtividade> usuarioAtividade = usuarioAtividadeRepository.findById(usuarioAtividadePK);
+
+            model.addAttribute("usuarioParticipante", usuarioAtividade.isPresent());
             model.addAttribute("usuarioCriador", usuarioCriador);
         }
 
@@ -91,6 +115,59 @@ public class AtividadeController {
 
     public boolean retornaSeUsuarioCriadoDaAtividade(Usuario usuarioCriadorAtividade, Usuario usuarioLogado) {
         return usuarioCriadorAtividade.getId().equals(usuarioLogado.getId());
+    }
+
+    @GetMapping("/participar/{id}")
+    public String participarAtividade(@PathVariable Long id, HttpServletRequest request) {
+        Usuario usuario = UserDetails.getUserLogged(request);
+        Optional<Atividade> atividade = atividadeRepository.findById(id);
+
+        if(!atividade.isPresent()) {
+            return "redirect:/visualizarAtividade/" + id;
+        }
+
+        UsuarioAtividadePK usuarioAtividadePK = new UsuarioAtividadePK();
+        usuarioAtividadePK.setAtividade(atividade.get());
+        usuarioAtividadePK.setUsuario(usuario);
+
+        Optional<UsuarioAtividade> usuarioAtividade = usuarioAtividadeRepository.findById(usuarioAtividadePK);
+
+        if(!usuarioAtividade.isPresent()){
+            UsuarioAtividade usuarioAtividadeNovo = new UsuarioAtividade();
+            usuarioAtividadeNovo.setUsuarioAtividadePK(usuarioAtividadePK);
+            usuarioAtividadeNovo.setDataRegistro(LocalDateTime.now());
+
+            usuarioAtividadeRepository.save(usuarioAtividadeNovo);
+        }
+
+        return "redirect:/visualizarAtividade/" + id;
+    }
+
+    @GetMapping("/sair/{id}")
+    public String sairDaAtividade(@PathVariable Long id, HttpServletRequest request) {
+        Usuario usuario = UserDetails.getUserLogged(request);
+        Optional<Atividade> atividade = atividadeRepository.findById(id);
+
+        if(!atividade.isPresent()) {
+            return "redirect:/visualizarAtividade/" + id;
+        }
+
+        UsuarioAtividadePK usuarioAtividadePK = new UsuarioAtividadePK();
+        usuarioAtividadePK.setAtividade(atividade.get());
+        usuarioAtividadePK.setUsuario(usuario);
+
+        Optional<UsuarioAtividade> usuarioAtividade = usuarioAtividadeRepository.findById(usuarioAtividadePK);
+
+        if(usuarioAtividade.isPresent() && 
+           !retornaSeUsuarioCriadoDaAtividade(usuario, atividade.get().getCriador())
+        ){
+            UsuarioAtividade usuarioAtividadeRemover = new UsuarioAtividade();
+            usuarioAtividadeRemover.setUsuarioAtividadePK(usuarioAtividadePK);
+
+            usuarioAtividadeRepository.delete(usuarioAtividadeRemover);
+        }
+
+        return "redirect:/visualizarAtividade/" + id;
     }
 
 }

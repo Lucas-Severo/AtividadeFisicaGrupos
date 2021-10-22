@@ -1,5 +1,6 @@
 package com.edu.framework.atividadefisica.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -15,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "tb_atividade")
-public class Atividade {
+public class Atividade implements Serializable {
     
     @Id
     @Column(name = "at_id")
