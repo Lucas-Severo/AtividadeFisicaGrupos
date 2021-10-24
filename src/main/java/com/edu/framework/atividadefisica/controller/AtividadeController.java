@@ -83,6 +83,21 @@ public class AtividadeController {
         usuarioAtividade.setDataRegistro(LocalDateTime.now());
         usuarioAtividadeRepository.save(usuarioAtividade);
 
+        return "redirect:/visualizarAtividade/"+atividadeSalva.getId();
+    }
+
+    @GetMapping("/excluirAtividade/{id}")
+    public String excluirAtividade(@PathVariable Long id, HttpServletRequest request) {
+        Usuario usuario = UserDetails.getUserLogged(request);
+       
+        Optional<Atividade> atividade = atividadeRepository.findById(id);
+
+        if (atividade.isPresent() && atividade.get().getCriador().getId().equals(usuario.getId())) {
+            if (usuarioAtividadeRepository.countByUsuarioAtividadePK_Atividade_Id(atividade.get().getId()) == 1) {
+                atividadeRepository.deleteById(atividade.get().getId());
+            }
+        }
+
         return "redirect:/atividade";
     }
 
@@ -102,8 +117,13 @@ public class AtividadeController {
 
             Optional<UsuarioAtividade> usuarioAtividade = usuarioAtividadeRepository.findById(usuarioAtividadePK);
 
+            List<UsuarioAtividade> usuarios = buscarParticipantesAtividade(atividade.getId());
+            Long usuariosRegistrados = buscarQuantidadeParticipantesAtividade(atividade.getId());
+
             model.addAttribute("usuarioParticipante", usuarioAtividade.isPresent());
             model.addAttribute("usuarioCriador", usuarioCriador);
+            model.addAttribute("usuariosAtividade", usuarios);
+            model.addAttribute("quantidadeUsuariosAtividade", usuariosRegistrados);
         }
 
         model.addAttribute("atividade", atividade);
@@ -115,6 +135,16 @@ public class AtividadeController {
 
     public boolean retornaSeUsuarioCriadoDaAtividade(Usuario usuarioCriadorAtividade, Usuario usuarioLogado) {
         return usuarioCriadorAtividade.getId().equals(usuarioLogado.getId());
+    }
+
+    
+    private List<UsuarioAtividade> buscarParticipantesAtividade(Long atividadeId) {
+        List<UsuarioAtividade> usuarios = usuarioAtividadeRepository.findAllByUsuarioAtividadePK_Atividade_Id(atividadeId);
+        return usuarios;
+    }
+
+    private Long buscarQuantidadeParticipantesAtividade(Long atividadeId) {
+        return usuarioAtividadeRepository.countByUsuarioAtividadePK_Atividade_Id(atividadeId);
     }
 
     @GetMapping("/participar/{id}")
