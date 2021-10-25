@@ -17,3 +17,7 @@
 .iconePaginaNaoEncontrada {
     font-size: 3rem;
 }
+
+.filtroInput {
+    width: 200px;
+}

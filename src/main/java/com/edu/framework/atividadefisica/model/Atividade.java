@@ -48,6 +48,20 @@ public class Atividade implements Serializable {
     @Column(name = "at_dthr_inicio")
     private LocalDateTime data;
 
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", nome='" + getNome() + "'" +
+            ", ritmo='" + getRitmo() + "'" +
+            ", distancia='" + getDistancia() + "'" +
+            ", criador='" + getCriador() + "'" +
+            ", localidade='" + getLocalidade() + "'" +
+            ", modalidade='" + getModalidade() + "'" +
+            ", data='" + getData() + "'" +
+            "}";
+    }
+
     public Long getId() {
         return this.id;
     }
@@ -110,6 +124,101 @@ public class Atividade implements Serializable {
 
     public void setData(LocalDateTime data) {
         this.data = data;
+    }
+
+    public static class Filtro {
+        private String nome;
+
+        private String localidade;
+
+        private Double ritmo;
+
+        private String modalidade;
+
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+        private LocalDateTime data;
+
+        private Double distancia;
+
+        private String conteudo;
+
+        public String getNome() {
+            return nome;
+        }
+
+        public void setNome(String nome) {
+            this.nome = nome;
+        }
+
+        public String getLocalidade() {
+            return localidade;
+        }
+
+        public void setLocalidade(String localidade) {
+            this.localidade = localidade;
+        }
+
+        public Double getRitmo() {
+            return ritmo;
+        }
+
+        public void setRitmo(Double ritmo) {
+            this.ritmo = ritmo;
+        }
+
+        public String getModalidade() {
+            return modalidade;
+        }
+
+        public void setModalidade(String modalidade) {
+            this.modalidade = modalidade;
+        }
+
+        public LocalDateTime getData() {
+            return data;
+        }
+
+        public void setData(LocalDateTime data) {
+            this.data = data;
+        }
+
+        public Double getDistancia() {
+            return distancia;
+        }
+
+        public void setDistancia(Double distancia) {
+            this.distancia = distancia;
+        }
+
+        public void setModalidade(LocalDateTime data) {
+            this.data = data;
+        }
+
+        public void setModalidade(Double distancia) {
+            this.distancia = distancia;
+        }
+
+        public String getConteudo() {
+            return conteudo;
+        }
+
+        public void setConteudo(String conteudo) {
+            this.conteudo = conteudo;
+        }
+
+        @Override
+        public String toString() {
+            return "{" +
+                "nome='" + getNome() + "'" +
+                ", ritmo='" + getRitmo() + "'" +
+                ", distancia='" + getDistancia() + "'" +
+                ", localidade='" + getLocalidade() + "'" +
+                ", modalidade='" + getModalidade() + "'" +
+                ", data='" + getData() + "'" +
+                ", conteudo'" + getConteudo() + "'" +
+                "}";
+        }
+
     }
 
 }

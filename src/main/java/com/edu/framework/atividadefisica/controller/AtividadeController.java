@@ -2,6 +2,7 @@ package com.edu.framework.atividadefisica.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping
@@ -45,13 +47,43 @@ public class AtividadeController {
     private UsuarioAtividadeRepository usuarioAtividadeRepository;
 
     @GetMapping("/atividade")
-    public String exibirListaModalidades(Model model) {
-        List<Atividade> atividades = atividadeRepository.findAll();
+    public String exibirListaModalidades(Model model, @ModelAttribute Optional<Atividade.Filtro> atividadeFiltro) {
+        List<Atividade> atividades;
+
+        if(Objects.nonNull(atividadeFiltro.get().getConteudo()) && !atividadeFiltro.get().getConteudo().isEmpty()) {
+            String filtro = atividadeFiltro.get().getConteudo();
+            atividades = atividadeRepository.findAllByNomeAndRitmoAndDistancia(filtro);
+            model.addAttribute("atividadeFiltro", new Atividade.Filtro());
+        } else if(atividadeFiltro.isPresent() && !buscaVazia(atividadeFiltro.get())) {
+            Atividade.Filtro atividadeFiltrada = atividadeFiltro.get();
+            atividades = atividadeRepository.findAllByNomeAndLocalidadeAndRitmoAndModalidadeAndDataAndDistancia(atividadeFiltrada.getNome(), atividadeFiltrada.getLocalidade(), atividadeFiltrada.getRitmo(), atividadeFiltrada.getModalidade(), atividadeFiltrada.getData(), atividadeFiltrada.getDistancia());
+            model.addAttribute("atividadeFiltro", atividadeFiltro.get());
+            System.out.println(atividadeFiltrada);
+        } else {
+            atividades = atividadeRepository.findAll();
+            model.addAttribute("atividadeFiltro", new Atividade.Filtro());
+        }
+        
         model.addAttribute("atividades", atividades);
         model.addAttribute("selectedOption", "atividade");
         model.addAttribute("pageTitle", "Atividades");
 
+        List<Modalidade> modalidades = modalidadeRepository.findAll();
+        model.addAttribute("modalidades", modalidades);
+
         return "atividade";
+    }
+
+    public boolean buscaVazia(Atividade.Filtro atividade) {
+        return (Objects.isNull(atividade.getNome()) || 
+            atividade.getNome().isEmpty()) &&
+            (Objects.isNull(atividade.getNome()) ||
+            atividade.getLocalidade().isEmpty()) &&
+            Objects.isNull(atividade.getRitmo()) &&
+            (Objects.isNull(atividade.getModalidade()) ||
+            atividade.getModalidade().isEmpty()) &&
+            Objects.isNull(atividade.getData()) &&
+            Objects.isNull(atividade.getDistancia());
     }
 
     @GetMapping("/cadastrarAtividade")
@@ -95,9 +127,11 @@ public class AtividadeController {
         Optional<Atividade> atividade = atividadeRepository.findById(id);
 
         if (atividade.isPresent() && atividade.get().getCriador().getId().equals(usuario.getId())) {
-            Long atividadeId = atividade.get().getId();    
-            usuarioAtividadeRepository.deleteAllByUsuarioAtividadePK_Atividade_Id(atividadeId);
-            atividadeRepository.deleteById(atividadeId);
+            if(usuarioAtividadeRepository.countByUsuarioAtividadePK_Atividade_Id(atividade.get().getId()) == 1) {
+                Long atividadeId = atividade.get().getId();    
+                usuarioAtividadeRepository.deleteAllByUsuarioAtividadePK_Atividade_Id(atividadeId);
+                atividadeRepository.deleteById(atividadeId);
+            }
         }
 
         return "redirect:/atividade";
