@@ -14,4 +14,6 @@ public interface UsuarioAtividadeRepository extends JpaRepository<UsuarioAtivida
     List<UsuarioAtividade> findAllByUsuarioAtividadePK_Atividade_Id(Long atividadeId);
 
     Long countByUsuarioAtividadePK_Atividade_Id(Long atividadeId);
+
+    void deleteAllByUsuarioAtividadePK_Atividade_Id(Long atividadeId);
 }

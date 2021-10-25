@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import com.edu.framework.atividadefisica.dto.AtividadeRepository;
 import com.edu.framework.atividadefisica.dto.LocalidadeRepository;
@@ -87,15 +88,16 @@ public class AtividadeController {
     }
 
     @GetMapping("/excluirAtividade/{id}")
+    @Transactional
     public String excluirAtividade(@PathVariable Long id, HttpServletRequest request) {
         Usuario usuario = UserDetails.getUserLogged(request);
        
         Optional<Atividade> atividade = atividadeRepository.findById(id);
 
         if (atividade.isPresent() && atividade.get().getCriador().getId().equals(usuario.getId())) {
-            if (usuarioAtividadeRepository.countByUsuarioAtividadePK_Atividade_Id(atividade.get().getId()) == 1) {
-                atividadeRepository.deleteById(atividade.get().getId());
-            }
+            Long atividadeId = atividade.get().getId();    
+            usuarioAtividadeRepository.deleteAllByUsuarioAtividadePK_Atividade_Id(atividadeId);
+            atividadeRepository.deleteById(atividadeId);
         }
 
         return "redirect:/atividade";
