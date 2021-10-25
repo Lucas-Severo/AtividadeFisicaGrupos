@@ -48,20 +48,6 @@ public class Atividade implements Serializable {
     @Column(name = "at_dthr_inicio")
     private LocalDateTime data;
 
-    @Override
-    public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", nome='" + getNome() + "'" +
-            ", ritmo='" + getRitmo() + "'" +
-            ", distancia='" + getDistancia() + "'" +
-            ", criador='" + getCriador() + "'" +
-            ", localidade='" + getLocalidade() + "'" +
-            ", modalidade='" + getModalidade() + "'" +
-            ", data='" + getData() + "'" +
-            "}";
-    }
-
     public Long getId() {
         return this.id;
     }
@@ -204,19 +190,6 @@ public class Atividade implements Serializable {
 
         public void setConteudo(String conteudo) {
             this.conteudo = conteudo;
-        }
-
-        @Override
-        public String toString() {
-            return "{" +
-                "nome='" + getNome() + "'" +
-                ", ritmo='" + getRitmo() + "'" +
-                ", distancia='" + getDistancia() + "'" +
-                ", localidade='" + getLocalidade() + "'" +
-                ", modalidade='" + getModalidade() + "'" +
-                ", data='" + getData() + "'" +
-                ", conteudo'" + getConteudo() + "'" +
-                "}";
         }
 
     }

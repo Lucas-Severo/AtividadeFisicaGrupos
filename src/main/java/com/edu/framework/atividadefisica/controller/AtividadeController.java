@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping
@@ -58,7 +57,6 @@ public class AtividadeController {
             Atividade.Filtro atividadeFiltrada = atividadeFiltro.get();
             atividades = atividadeRepository.findAllByNomeAndLocalidadeAndRitmoAndModalidadeAndDataAndDistancia(atividadeFiltrada.getNome(), atividadeFiltrada.getLocalidade(), atividadeFiltrada.getRitmo(), atividadeFiltrada.getModalidade(), atividadeFiltrada.getData(), atividadeFiltrada.getDistancia());
             model.addAttribute("atividadeFiltro", atividadeFiltro.get());
-            System.out.println(atividadeFiltrada);
         } else {
             atividades = atividadeRepository.findAll();
             model.addAttribute("atividadeFiltro", new Atividade.Filtro());
