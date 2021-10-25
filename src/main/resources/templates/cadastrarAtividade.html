@@ -20,7 +20,7 @@
                                 <input autocomplete="off" type="text" class="form-control localidadeAutocomplete" list="listaLocalidades" required>
                                 <datalist id="listaLocalidades">
                                     <select class="localidade" th:field="*{localidade}">
-                                        <option th:each="localidade : ${localidades}" th:value="${localidade.id}" th:text="${localidade.cidade}"></option>
+                                        <option th:each="localidade : ${localidades}" th:value="${localidade.id}" th:text="${localidade.cidade} + '/' + ${localidade.sigla}"></option>
                                     </select>
                                 </datalist>
                             </div>
