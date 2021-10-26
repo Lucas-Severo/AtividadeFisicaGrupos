@@ -8,7 +8,9 @@ function extrairLocalidades() {
 
     for(let localidade of localidadeOptions){
         localidades[localidade.textContent] = localidade.value
-        localidade.removeAttribute("value")
+        if (!localidade.attributes.selected) {
+            localidade.removeAttribute("value")
+        }
     }
 }
 

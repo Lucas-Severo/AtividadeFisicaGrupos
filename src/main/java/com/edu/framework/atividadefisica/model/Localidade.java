@@ -1,5 +1,7 @@
 package com.edu.framework.atividadefisica.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_localidade")
-public class Localidade {
+public class Localidade implements Serializable {
     
     @Id
     @Column(name = "lo_id")
@@ -63,6 +65,11 @@ public class Localidade {
 
     public void setSigla(String estadoSigla) {
         this.estadoSigla = estadoSigla;
+    }
+
+    @Override
+    public String toString() {
+        return getCidade() + "/" + getSigla();
     }
 
 }

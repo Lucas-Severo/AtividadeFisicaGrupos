@@ -117,6 +117,41 @@ public class AtividadeController {
         return "redirect:/visualizarAtividade/"+atividadeSalva.getId();
     }
 
+    @GetMapping("/editarAtividade/{id}")
+    public String exibirTelaEdicaoAtividade(Model model, @PathVariable Long id, HttpServletRequest request) {
+        Optional<Atividade> atividade = atividadeRepository.findById(id);
+        Usuario usuario = UserDetails.getUserLogged(request);
+
+        if (atividade.isPresent() && atividade.get().getCriador().getId().equals(usuario.getId())) {
+            List<Localidade> localidades = localidadeRepository.findAll();
+            List<Modalidade> modalidades = modalidadeRepository.findAll();
+
+            model.addAttribute("localidades", localidades);
+            model.addAttribute("atividade", atividade.get());
+            model.addAttribute("selectedOption", "atividade");
+            model.addAttribute("pageTitle", "Editar Atividade");
+
+            model.addAttribute("modalidades", modalidades);
+            
+            return "editarAtividade";
+        }
+
+        return "redirect:/visualizarAtividade/"+id;
+    }
+
+    @PostMapping("/editarAtividade/{id}")
+    public String editarAtividade(@ModelAttribute Atividade atividadeAtualizada, @PathVariable Long id, HttpServletRequest request) {
+        Optional<Atividade> atividade = atividadeRepository.findById(id);
+        Usuario usuario = UserDetails.getUserLogged(request);
+
+        if (atividade.isPresent() && atividade.get().getCriador().getId().equals(usuario.getId())) {
+            atividadeAtualizada.setCriador(atividade.get().getCriador());
+            atividadeRepository.save(atividadeAtualizada);
+        }
+
+        return "redirect:/visualizarAtividade/"+id;
+    }
+
     @GetMapping("/excluirAtividade/{id}")
     @Transactional
     public String excluirAtividade(@PathVariable Long id, HttpServletRequest request) {

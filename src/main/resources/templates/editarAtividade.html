@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="headfile.html :: head(${pageTitle})">
+    </head>
+
+    <body>
+        <div th:replace="base"></div>
+        
+        <div class="viewport">
+            <div class="content container-fluid">
+                <div class="pt-2 ps-2">
+                    <form method="POST" th:action="@{'/editarAtividade/' + ${atividade.id}}" th:object="${atividade}">
+                        <div class="pt-2 row cadastro">
+                            <div class="col">
+                                <label>Nome do grupo</label>
+                                <input th:field="*{nome}" placeholder="Corrida" class="form-control" type="text" required>
+                            </div>
+                            <div class="col">
+                                <label>Localidade</label>
+                                <input autocomplete="off" th:value="*{localidade}" type="text" class="form-control localidadeAutocomplete" list="listaLocalidades" required>
+                            </div>
+                            <div class="col">
+                                <label>Ritmo</label>
+                                <div class="input-group">
+                                    <input type="number" min="1" step="0.01" th:field="*{ritmo}" class="form-control" required>
+                                    <label class="input-group-text">Km/h</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-4 row cadastro">
+                            <div class="col">
+                                <label>Modalidade</label>
+                                <select th:field="*{modalidade.id}" class="form-select" required>
+                                    <option th:each="modalidade : ${modalidades}" th:value="${modalidade.id}" th:text="${modalidade.nome}"></option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label>Data</label>
+                                <input th:field="*{data}" class="form-control" type="datetime-local" required>
+                            </div>
+                            <div class="col">
+                                <label>Distância</label>
+                                <div class="input-group">
+                                    <input class="form-control" min="1" step="0.01" th:field="*{distancia}" type="number" required>
+                                    <span class="input-group-text">Km</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control mt-3 botaoCadastro btn-success" type="submit" value="Editar">
+                        <datalist id="listaLocalidades">
+                            <select class="localidade" th:field="${atividade.localidade}">
+                                <option th:each="localidade : ${localidades}" th:value="${localidade.id}" th:text="${localidade.cidade} + '/' + ${localidade.sigla}"></option>
+                            </select>
+                        </datalist>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/js/script.js}"></script>
+    </body>
+</html>
