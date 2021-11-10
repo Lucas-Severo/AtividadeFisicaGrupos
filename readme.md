@@ -28,3 +28,19 @@ O objetivo desse projeto é desenvolver um sistema pelo qual o usuário possa en
     width="600"
     height="400"
     src="./readme/der.png"/>
+
+## Diagrama de casos de uso
+
+<image 
+    alt="Diagrama de casos de uso" 
+    width="600"
+    height="400"
+    src="./readme/casos_de_uso.jpeg"/>
+
+## Diagrama de classes
+
+<image 
+    alt="Diagrama de classes" 
+    width="600"
+    height="400"
+    src="./readme/classes.jpeg"/>
