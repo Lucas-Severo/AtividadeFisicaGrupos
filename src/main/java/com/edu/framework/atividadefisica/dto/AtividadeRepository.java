@@ -13,12 +13,12 @@ import org.springframework.stereotype.Repository;
 public interface AtividadeRepository extends JpaRepository<Atividade, Long>{
     
     @Query("SELECT atividade FROM Atividade atividade WHERE" +
-    "(:nome is '' OR atividade.nome LIKE :nome) " +
+    "(:nome is '' OR atividade.nome LIKE CONCAT('%', :nome, '%')) " +
     "AND (:localidade is '' OR atividade.localidade.cidade LIKE :localidade) " +
-    "AND (:ritmo is null OR atividade.ritmo LIKE :ritmo) " +
+    "AND (:ritmo is null OR atividade.ritmo = :ritmo) " +
     "AND (:modalidade is '' OR atividade.modalidade.nome LIKE :modalidade) " +
     "AND (:data is null OR atividade.data = :data) " +
-    "AND (:distancia is null OR atividade.distancia LIKE :distancia)")
+    "AND (:distancia is null OR atividade.distancia = :distancia)")
     List<Atividade> findAllByNomeAndLocalidadeAndRitmoAndModalidadeAndDataAndDistancia(String nome, String localidade, Double ritmo, String modalidade, LocalDateTime data, Double distancia);
 
     @Query("SELECT atividade FROM Atividade atividade WHERE (atividade.nome LIKE :conteudo)"
